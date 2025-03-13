@@ -1,0 +1,28 @@
+Hello team -
+
+I have been working on analyzing the data that we have available for transactions, products and users and have some thoughts.
+
+1. There are a wide variety of data issues
+  - There is only about 3 months of data from 2024 currently available
+  - There are many fields that have a high number of nulls. For example, 27% of products in the product data have a null manufacturer or a null brand, this shouldn't be possible. 
+      Another example would be that 11% of transactions have a null barcode, meaning we can't join those to the the product data to get info about category / manufacturer etc.
+      Many customer specific fields are null (such as birth date or language preference), but this could make sense if we weren't able to get that information from the customer or from a 3rd party yet
+  - There are users that exist in transactions but do not show up in the users file. This could indicate a possible issue with customer identity / creating customer profiles
+  - There are some problems with inconsistent data types, for example the final_quantity values have both numbers and strings when it should probably be an integer or float for all values
+  - There are duplicate records, we probably want to add some more ETL to clean up the data a bit before surfacing for downstream use cases
+
+2. There are some interesting findings in the data itself
+  - Scans are trending down pretty significantly. Even excluding September data there is still a slow degredation of scans over the months available in 2024. 
+      We should try to determine if this is because people are buying less in the macro environment, if rewards usage is just decreasing, or if we are losing share to a competitor
+  - Snacks are by far our most frequently seen product category in receipt scans
+  - Walmart is the most frequently scanned store, producing ~42% of scans (much larger than the next biggest which is Dollar General at 9%)
+  - We may want to break out the "Others" category for store and manufacturer as they are both large buckets of total
+
+You can find some visualizations available for this data here: https://lookerstudio.google.com/reporting/526e37a2-364d-494f-8648-e1d30674af57/page/pVwAF
+
+
+In terms of next steps:
+- I think we need to ensure this data exists for a longer time horizon so we can look at year over year and seasonal trends
+- We should investigate why certain users in transactions are not showing up in our users database, is there a possible bug in our process?
+- We should add some more data cleaning steps (for example, remove duplicates and fix inconsistent data types)
+- We should investigate the downward trend in scans. Has this continued to current date? What are the drivers behind reduced usage?
